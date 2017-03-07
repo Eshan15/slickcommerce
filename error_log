@@ -1,0 +1,5 @@
+[27-Feb-2017 09:36:38 UTC] PHP Fatal error:  Call to undefined function is_logged_in() in /home/eshan15/public_html/slick_commerce/application/controllers/Login.php on line 11
+[27-Feb-2017 09:37:57 UTC] PHP Fatal error:  Call to undefined function is_logged_in() in /home/eshan15/public_html/slick_commerce/application/controllers/Login.php on line 11
+[27-Feb-2017 09:38:18 UTC] PHP Fatal error:  Call to undefined function is_logged_in() in /home/eshan15/public_html/slick_commerce/application/controllers/Login.php on line 11
+[27-Feb-2017 09:39:01 UTC] PHP Fatal error:  Call to undefined function is_logged_in() in /home/eshan15/public_html/slick_commerce/application/controllers/Login.php on line 11
+[27-Feb-2017 09:40:02 UTC] PHP Fatal error:  Call to undefined function is_logged_in() in /home/eshan15/public_html/slick_commerce/application/controllers/Home.php on line 9

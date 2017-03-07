@@ -4,11 +4,12 @@ class blank_template extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->helper(array('form', 'url'));
+        $this->load->helper(array('form', 'url','login'));
         $this->load->library(array('session', 'form_validation'));
         $this->load->database();
         $this->load->model('blank_model');
 		$this->load->model('user_createsites');
+		is_logged_in();
     }
 
     function index() {
@@ -195,9 +196,11 @@ class blank_template extends CI_Controller {
 	}
 	
 	function add_product(){
+		$get_cat=$this->blank_model->category_retrieve();
+		print_r($get_cat);
 		$this->load->view('blank_templates/admin/header');  
 		$this->load->view('blank_templates/admin/sidebar_menu');		
-		$this->load->view('blank_templates/admin/shop/add_product');
+		$this->load->view('blank_templates/admin/shop/add_product',array('get_cat'=>$get_cat));
 		$this->load->view('blank_templates/admin/footer');
 	}
 	function save_product(){
@@ -223,6 +226,129 @@ class blank_template extends CI_Controller {
 		}		
 	}
 	
+	
+	//Add Categories
+
+	function add_category(){
+		$get_cat=$this->blank_model->product_cat();
+		$detail_cat=array(
+			'show_cat' => $get_cat,
+		);
+		$this->load->view('blank_templates/admin/header'); 
+		$this->load->view('blank_templates/admin/sidebar_menu');				
+		$this->load->view('blank_templates/admin/shop/add_category', $detail_cat);
+		$this->load->view('blank_templates/admin/footer');
+	}	
+	
+	function save_category(){
+		$cat_name=$_POST['cat_name'];
+		$user_id=$this->session->userdata('uid');
+		$qry="select * from products_category_id where cat_name='$cat_name' and user_id='$user_id'";
+		$query = $this->db->query($qry);		
+		$count=$query->num_rows();
+		if($count!=1){
+			$cat_ret=$this->blank_model->save_cate_data();
+			redirect('blank_template/add_category');
+		}else{					
+			$this->session->set_flashdata('feedback', 'Categorie name already exist');	
+			redirect('blank_template/add_category');			
+		}
+	}
+	
+	function edit_category($cat_id){
+		$get_cat=$this->blank_model->product_cat();
+		$edit_cat=$this->blank_model->edit_cat($cat_id);
+		
+		$detail_cat_edit=array(
+			'edit_cat' => $edit_cat,
+			'show_cat' => $get_cat,
+		);
+		$this->load->view('blank_templates/admin/header'); 
+		$this->load->view('blank_templates/admin/sidebar_menu');				
+		$this->load->view('blank_templates/admin/shop/add_category', $detail_cat_edit);
+		$this->load->view('blank_templates/admin/footer');
+	}
+	
+	function update_cat($id){
+		$cat_name=$_POST['edit_name'];
+		$user_id=$this->session->userdata('uid');
+		$qry="select * from products_category_id where cat_name='$cat_name' and user_id='$user_id'";
+		$query = $this->db->query($qry);		
+		$count=$query->num_rows();
+		if($count!=1){
+			$return=$this->blank_model->update_category($id);
+			if($return){
+				redirect('blank_template/add_category');
+			}
+		}else{					
+			$this->session->set_flashdata('feedback', 'Categorie name already exist');	
+			redirect('blank_template/edit_category/' . $id);			
+		}
+	}
+	
+	function delete_category($id){
+		$return=$this->blank_model->del_category($id);
+		if($return){
+			redirect('blank_template/add_category');
+		}
+	}
+	
+	function add_attributes(){
+		$get_attr=$this->blank_model->product_attr();
+		$detail_attr=array(
+			'show_attr' => $get_attr,
+		);
+		$this->load->view('blank_templates/admin/header'); 
+		$this->load->view('blank_templates/admin/sidebar_menu');				
+		$this->load->view('blank_templates/admin/shop/add_attr', $detail_attr);
+		$this->load->view('blank_templates/admin/footer');
+	}
+	
+	function save_attr(){
+		$attr_name=$_POST['attr_name'];
+		$user_id=$this->session->userdata('uid');
+		$qry="select * from shop_variable_attributes where attr_name='$attr_name' and user_id='$user_id'";
+		$query = $this->db->query($qry);		
+		$count=$query->num_rows();
+		if($count!=1){
+			$cat_ret=$this->blank_model->save_attr_data();
+			redirect('blank_template/add_attributes');
+		}else{					
+			$this->session->set_flashdata('feedback', 'Attributes name already exist');	
+			redirect('blank_template/add_attributes');			
+		}		
+	}
+	
+	function edit_attr($attr_id){
+		$get_attr=$this->blank_model->product_attr();
+		$edit_attr=$this->blank_model->edit_attributes($attr_id);		
+		$detail_attr_edit=array(
+			'edit_attr' => $edit_attr,
+			'show_attr' => $get_attr,
+		);
+		$this->load->view('blank_templates/admin/header'); 
+		$this->load->view('blank_templates/admin/sidebar_menu');				
+		$this->load->view('blank_templates/admin/shop/add_attr', $detail_attr_edit);
+		$this->load->view('blank_templates/admin/footer');
+	}
+	
+	
+	function update_attr($id){
+		$edit_name=$_POST['edit_name'];
+		$user_id=$this->session->userdata('uid');
+		$qry="select * from shop_variable_attributes where attr_name='$edit_name' and user_id='$user_id'";
+		$query = $this->db->query($qry);		
+		$count=$query->num_rows();
+		if($count!=1){
+			$cat_ret=$this->blank_model->update_attributes($id);
+			if($cat_ret){
+				redirect('blank_template/add_attributes');
+			}
+		}else{					
+			$this->session->set_flashdata('feedback', 'Attributes name already exist');	
+			redirect('blank_template/edit_attr/' . $id);			
+		}
+	}
 	
 	// end shop
 	

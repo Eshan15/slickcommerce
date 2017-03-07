@@ -9,6 +9,7 @@ class users extends CI_Controller {
         $this->load->database();
         $this->load->model('user_model');
 		$this->load->model('user_createsites');
+		is_logged_in();
     }
 	
 	function index(){

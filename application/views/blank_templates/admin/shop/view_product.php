@@ -25,8 +25,10 @@
 							<tr>
 							<td><?php echo $i; ?></td>
 							<td><?php echo $prd->simple_prd_name; ?></td>
-							<td><?php echo $prd->simple_prd_short_desc; ?></td>
 							<td>-N/A-</td>
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;<a id="feature_prd" href="<?php echo base_url('index.php/blank_template/add_feature/'); ?>">
+								<i style="color:#BA0000;" class="fa fa-times" aria-hidden="true"></i>
+							</a></td>
 							<td>-N/A-</td>
 							</tr>
 							<?php $i++; } ?>

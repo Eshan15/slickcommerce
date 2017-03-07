@@ -67,7 +67,7 @@
 							</a>
 							<ul>
 								<li><a href="<?php echo base_url('index.php/blank_template/shop'); ?>">Enable Shop</a></li>
-								<li><a href="#">Add Categories</a></li>
+								<li><a href="<?php echo base_url('index.php/blank_template/add_category'); ?>">Add Categories</a></li>
 								<li><a href="<?php echo base_url('index.php/blank_template/show_products/'); ?>">Products</a></li>
 								<li><a href="<?php echo base_url('index.php/blank_template/add_product/'); ?>">Add Products</a></li>
 								<li><a href="#">Orders</a></li>								
@@ -144,7 +144,9 @@
                </a>
                <div class="dropdown-divider"></div>
                <a class="dropdown-item" href="#"><i class="ti-help m-r-0-5"></i> Help</a>
-               <a class="dropdown-item" href="#"><i class="ti-power-off m-r-0-5"></i> Sign out</a>
+				<a class="dropdown-item" href="<?php echo base_url('index.php/home/logout'); ?>">
+					<i class="ti-power-off m-r-0-5"></i> Sign out
+				</a>
             </div>
          </li>
          <li class="nav-item hidden-md-up">

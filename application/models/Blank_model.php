@@ -189,6 +189,13 @@ class Blank_model extends CI_Model {
 		echo $shop_select;						
 	}	
 	
+	function category_retrieve(){
+		$user_id=$this->session->userdata('uid');
+		$query="select * from products_category_id where user_id='$user_id'";
+		$show_data=$this->db->query($query);
+		return $show_data->result();
+	}
+	
 	function get_detailof_shop(){
 		$user_id=$this->session->userdata('uid');
 		$query="select * from shop where user_id='$user_id'";
@@ -245,6 +252,102 @@ class Blank_model extends CI_Model {
 	        return true;
 		}
 	}
+	
+	
+	//Categories
+	
+	function product_cat(){
+		$user_id=$this->session->userdata('uid');
+		$query="SELECT * FROM  products_category_id WHERE user_id='$user_id' order by cat_name asc";
+		$show_data=$this->db->query($query);
+		return $show_data->result();
+	}
+	
+	function save_cate_data(){
+		$cat_name=$_POST['cat_name'];
+		$user_id=$this->session->userdata('uid');
+		$save_array=
+		array(
+			'cat_name' => $cat_name,
+			'user_id' => $user_id
+		);
+		$this->db->insert('products_category_id',$save_array);
+		return true;		
+	}
+	
+	function edit_cat($cat_id){
+		$user_id=$this->session->userdata('uid');
+		$qry="select * from products_category_id where cat_id='$cat_id' and user_id='$user_id'";		
+		$query = $this->db->query($qry);
+		return $query->result();
+	}
+	
+	function update_category($cat_id){
+		$updatefor_cat=$_POST['edit_name'];
+		$this->db->where('cat_id',$cat_id);
+		$update=array(
+			'cat_name' => $updatefor_cat,
+		);
+		$this->db->update('products_category_id', $update);
+		return true;
+	}
+	
+	function del_category($cat_id){
+		$update=array(
+			'prd_cat_id' => 0,
+		);
+		$this->db->where('prd_cat_id',$cat_id);		
+		$this->db->update('shop_simple_products', $update);				
+		$this->db->where('prd_cat_id',$cat_id);
+		$this->db->update('shop_variable_products', $update);
+		$this->db->where('cat_id', $cat_id);
+		$this->db->delete('products_category_id'); 
+		return true;
+	}
+	
+	//End Categories
+	
+	//Attributes
+	function product_attr(){
+		$user_id=$this->session->userdata('uid');
+		$query="SELECT * FROM  shop_variable_attributes WHERE user_id='$user_id' order by attr_name asc";
+		$show_data=$this->db->query($query);
+		return $show_data->result();
+	}
+	
+	function save_attr_data(){
+		$attr_name=$_POST['attr_name'];
+		$user_id=$this->session->userdata('uid');
+		$save_array=
+		array(
+			'attr_name' => $attr_name,
+			'user_id' => $user_id
+		);
+		$this->db->insert('shop_variable_attributes',$save_array);
+		return true;
+	}
+	
+	function edit_attributes($attr_id){
+		$user_id=$this->session->userdata('uid');
+		$query="SELECT * FROM  shop_variable_attributes WHERE user_id='$user_id' and attr_id='$attr_id'";
+		$show_data=$this->db->query($query);
+		return $show_data->result();		
+	}
+	
+	function update_attributes($attr_id){
+		$user_id=$this->session->userdata('uid');
+		$attr_name=$_POST['edit_name'];
+		$update_array = array(
+				'attr_name' => $attr_name,
+				'user_id' => $user_id
+			);
+		$this->db->where('attr_id',$attr_id);
+		$this->db->update('shop_variable_attributes', $update_array);
+		return true;
+	}
+	//End Attributes
+	
+	
 	
 	//End Shop
 	
